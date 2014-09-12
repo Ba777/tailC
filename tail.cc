@@ -8,10 +8,18 @@ using namespace std;
 // -------- Helper funcitons
 
 
+void printHelp(){
+    cout << endl;
+    cout << "Usage:" << endl;
+    cout << "   ./tailC [-n NR] FILENAME" << endl;
+}
+
+// ------------
+
+
 bool isNumber(const string& inString){
-    cout << inString << endl;
     for (int i = 0; i < inString.size(); i++) {
-        if ( (int)inString.at(i) > 9 ) {
+        if ( (int)inString.at(i) < 48 || (int)inString.at(i) > 57 ) {
             return false;
         }
     }
@@ -30,11 +38,6 @@ int main(int argc, char *argv[])
     vector<string> argVector;
     for (int i = 0; i < argc; i++) {
         argVector.insert(argVector.begin(),static_cast<string>(argv[i]));
-    }
-    
-    cout << "Args: " << endl;
-    for (int i = 0; i < argVector.size(); i++) {
-        cout << argVector.at(i) << endl;
     }
     
     // Check if user needs help
@@ -57,14 +60,35 @@ int main(int argc, char *argv[])
             }
             // Remove nrOfLines from args
             argVector.erase(argVector.begin()+i);
-//            argVector.erase(argVector.begin()+i);
+            argVector.erase(argVector.begin()+i-1);
         }
     }
     
     // Rest of args are filepaths.
     filePaths = argVector;
     
-//    for (int i = 0; i < filePaths.size(); i++) {
-//        <#statements#>
-//    }
+    if ( filePaths.size() == 0) {
+        printHelp();
+    }
+    
+    for (int i = 0; i < filePaths.size(); i++) {
+        ifstream readFile(filePaths.at(i));
+        vector<string> fileContent;
+        
+        if ( readFile.is_open() ) {
+            string line;
+            i = 0;
+            
+            while ( getline(readFile,line) ) {
+                fileContent[i] = line;
+                i++;
+            }
+        }
+    }
 }
+
+
+
+
+
+
