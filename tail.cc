@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
             }
             else {
                 cout << "Argument after '-n' needs to be a valid number." << endl;
+                exit(2);
             }
             // Remove nrOfLines from args
             argVector.erase(argVector.begin()+i);
@@ -76,6 +77,7 @@ int main(int argc, char *argv[])
     }
     
     for (int i = 0; i < filePaths.size(); i++) {
+        // Read file
         ifstream readFile(filePaths.at(i));
         vector<string> fileContent;
         
@@ -85,10 +87,12 @@ int main(int argc, char *argv[])
             while ( getline(readFile,line) ) {
                 fileContent.push_back(line);
             }
-            // Print
+            
+            // Indenting output
             if (filePaths.size() > 1) {
                 cout << "----- " << filePaths.at(i) << " -----" << endl;
             }
+            // Print file
             int it = 0;
             while ( it < nrOfLines && !fileContent.empty()) {
                 cout << fileContent.front() << endl;
@@ -96,7 +100,7 @@ int main(int argc, char *argv[])
                 it++;
             }
             if (filePaths.size() > 1) {
-                cout << endl;
+                cout << endl;           // Indenting output
             }
         }
         
