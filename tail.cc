@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 // -------- Helper funcitons
@@ -83,6 +84,14 @@ int main(int argc, char *argv[])
                 fileContent[i] = line;
                 i++;
             }
+            // Print
+            for (int i = fileContent.size()-1; i >= 0; i--) {
+                cout << fileContent[i] << endl;
+            }
+        }
+        
+        else {
+            cout << filePaths[i] << " is not a valid filepath" << endl;
         }
     }
 }
