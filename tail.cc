@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
 using namespace std;
 
 // -------- Helper funcitons
@@ -13,6 +14,7 @@ void printHelp(){
     cout << endl;
     cout << "Usage:" << endl;
     cout << "   ./tailC [-n NR] FILENAME" << endl;
+    exit(1);
 }
 
 // ------------
@@ -37,15 +39,15 @@ int main(int argc, char *argv[])
     
     // Read args to vector
     vector<string> argVector;
-    for (int i = 0; i < argc; i++) {
-        argVector.insert(argVector.begin(),static_cast<string>(argv[i]));
+    for (int i = 1; i < argc; i++) {
+        argVector.push_back(static_cast<string>(argv[i]));
     }
     
     // Check if user needs help
     for (int i = 0; i < argVector.size(); i++) {
         if ( argVector.at(i) == "-h" || argVector.at(i) == "--help" ) {
             argVector.erase(argVector.begin()+i);
-            cout << "User needs help" << endl;
+            printHelp();
         }
     }
     
@@ -53,21 +55,22 @@ int main(int argc, char *argv[])
     for (int i = 0; i < argVector.size(); i++) {
         if ( argVector.at(i) == "-n" ) {
             // Get nrOfLines - need to find an exception if char isn't a number
-            if ( isNumber(argVector.at(i-1)) ) {
-                nrOfLines = atoi(argVector.at(i-1).c_str());
+            if ( isNumber(argVector.at(i+1)) ) {
+                nrOfLines = atoi(argVector.at(i+1).c_str());
             }
             else {
-                cout << "Parameter after '-n' needs to be a valid number." << endl;
+                cout << "Argument after '-n' needs to be a valid number." << endl;
             }
             // Remove nrOfLines from args
             argVector.erase(argVector.begin()+i);
-            argVector.erase(argVector.begin()+i-1);
+            argVector.erase(argVector.begin()+i);
         }
     }
     
     // Rest of args are filepaths.
     filePaths = argVector;
     
+    // If we have no filepaths - print help.
     if ( filePaths.size() == 0) {
         printHelp();
     }
@@ -78,15 +81,22 @@ int main(int argc, char *argv[])
         
         if ( readFile.is_open() ) {
             string line;
-            i = 0;
             
             while ( getline(readFile,line) ) {
-                fileContent[i] = line;
-                i++;
+                fileContent.push_back(line);
             }
             // Print
-            for (int i = fileContent.size()-1; i >= 0; i--) {
-                cout << fileContent[i] << endl;
+            if (filePaths.size() > 1) {
+                cout << "----- " << filePaths.at(i) << " -----" << endl;
+            }
+            int it = 0;
+            while ( it < nrOfLines && !fileContent.empty()) {
+                cout << fileContent.front() << endl;
+                fileContent.erase(fileContent.begin()+0);
+                it++;
+            }
+            if (filePaths.size() > 1) {
+                cout << endl;
             }
         }
         
