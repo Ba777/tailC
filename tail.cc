@@ -108,6 +108,8 @@ int main(int argc, char *argv[])
             cout << filePaths[i] << " is not a valid filepath" << endl;
         }
     }
+    
+    return 0;
 }
 
 
