@@ -94,11 +94,18 @@ int main(int argc, char *argv[])
             }
             // Print file
             int it = 0;
+            vector<string> output;
             while ( it < nrOfLines && !fileContent.empty()) {
-                cout << fileContent.front() << endl;
-                fileContent.erase(fileContent.begin()+0);
+                output.insert(output.begin(),fileContent.back());
+                fileContent.pop_back();
                 it++;
             }
+            
+            while (!output.empty()) {
+                cout << output.front() << endl;
+                output.erase(output.begin()+0);
+            }
+            
             if (filePaths.size() > 1) {
                 cout << endl;           // Indenting output
             }
